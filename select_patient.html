@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Patient</title>
+    <style>
+        /* Centering the form */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f7fa;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            background: #f0f2f5;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .radio-label:hover {
+            background: #e0e0e0;
+        }
+
+        .radio-label input {
+            accent-color: #007bff;
+            transform: scale(1.2);
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            background-color: #28a745;
+        }
+
+        .btn-secondary:hover {
+            background-color: #1e7e34;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <form action="{{ url_for('select_patient') }}" method="POST">
+            <h2>Select Patient</h2>
+            <div class="radio-group">
+                {% for patient in patients %}
+                    <label class="radio-label">
+                        <input type="radio" name="patient_id" value="{{ patient.Patient_ID }}" required>
+                        {{ patient.Name }}
+                    </label>
+                {% endfor %}
+            </div>
+
+            <!-- If in history mode, only allow viewing history -->
+            {% if history_mode %}
+                <button type="submit" class="btn btn-primary">📖 View History</button>
+            {% else %}
+                <button type="submit" class="btn btn-primary" name="action" value="book">📅Resume</button>
+                <button type="submit" class="btn btn-secondary" name="action" value="history">📖 View History</button>
+            {% endif %}
+        </form>
+
+        <form action="{{ url_for('add_user') }}" method="GET">
+            <button type="submit" class="btn btn-secondary">Add New User</button>
+        </form>
+    </div>
+
+</body>
+</html>

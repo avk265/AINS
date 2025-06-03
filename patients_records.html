@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctors List</title>
+    <style>
+        /* General styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2C3E50;
+            color: white;
+            padding: 15px 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+
+        .nav-links a:hover {
+            background-color: #34495E;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 10px 15px;
+            border-radius: 25px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-left: auto;
+        }
+        
+        .search-container label {
+            margin-right: 10px;
+            font-size: 16px;
+            color: #34495E;
+        }
+
+        .search-container input, .search-container select {
+            padding: 8px 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-right: 10px;
+        }
+
+        .search-container input:focus, .search-container select:focus {
+            border-color: #2980B9;
+            outline: none;
+        }
+
+        .search-container button {
+            padding: 8px 12px;
+            background-color: #2980B9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #1F618D;
+        }
+
+        .form-container {
+            width: 50%;
+            margin: 30px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #2980B9;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1F618D;
+        }
+
+        .doctor-card {
+        background-color: white;
+        padding: 20px;
+        margin: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        display: inline-block;
+        width: calc(33.33% - 30px);
+        box-sizing: border-box;
+        border-radius: 8px;
+        position: relative;
+        text-align: left;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0; /* Light grey border for a softer look */
+    }
+
+    /* Hover effect for the cards to make them pop out slightly */
+    .doctor-card:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        border-color: #3498db; /* Blue border when hovered */
+        transform: translateY(-5px); /* Slightly lift the card */
+    }
+
+    .doctor-card h3 {
+        margin: 10px 0;
+        font-size: 22px;
+        font-weight: 600;
+        color: #2d3436; /* Dark gray for the doctor's name for a professional look */
+    }
+
+    .doctor-card p {
+        margin: 8px 0;
+        color: #636e72; /* Softer gray for text */
+    }
+
+    .doctor-card p strong {
+        color: #2980b9; /* Blue color for the labels to make them stand out */
+    }
+
+    /* Edit icon for the card */
+    .doctor-card .edit-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        font-size: 24px;
+        color: #3498db; /* Blue color for the edit icon */
+        transition: color 0.3s ease;
+    }
+
+    .doctor-card .edit-icon:hover {
+        color: #2980b9; /* Darker blue on hover */
+    }
+
+    /* Section for doctor information */
+    .doctor-card .doctor-info {
+        margin-top: 10px;
+    }
+
+    .doctor-card .doctor-info p {
+        margin-bottom: 5px;
+    }
+
+    .doctor-card .doctor-info p span {
+        font-weight: bold;
+        color: #3498db; /* Use a blue color for section titles */
+    }
+
+    /* Responsiveness for mobile and tablet */
+    @media (max-width: 768px) {
+        .doctor-card {
+            width: calc(50% - 30px);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .doctor-card {
+            width: 100%;
+        }
+    }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+        }
+
+        .modal-header {
+            font-size: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .modal-content label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        .modal-content select, .modal-content input {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .modal-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .modal-footer button {
+            background-color: #2980B9;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-footer button:hover {
+            background-color: #1F618D;
+        }
+        .patient-list {
+        list-style: none;
+        padding: 0;
+        width: 50%;
+        margin: 20px auto;
+    }
+
+    .patient-list li {
+        background-color: white;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+        border-left: 5px solid #2980B9;
+        font-size: 16px;
+        color: #2C3E50;
+    }
+
+    .patient-list li:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .patient-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #2980B9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.patient-button:hover {
+    background-color: #1F618D;
+}
+
+    </style>
+  <script>
+    // Function to fetch all patients initially
+function fetchAllPatients() {
+    fetch('/api/pr')
+
+        .then(response => response.json())
+        .then(data => {
+            displayPatients(data);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+// Function to display patients in the list as buttons
+function displayPatients(data) {
+    let dataList = document.getElementById('data-list');
+    dataList.innerHTML = ""; // Clear existing list
+
+    if (data.length === 0) {
+        dataList.innerHTML = "<li>No matching patients found.</li>";
+        return;
+    }
+
+    data.forEach(item => {
+        const Patient_ID = item.Patient_ID;  // Ensure `item.Patient_ID` holds the correct ID
+        console.log(Patient_ID);  // Check if the ID is being logged correctly
+
+        let li = document.createElement('li');
+        
+        let button = document.createElement('button');
+        button.textContent = item.Name || "Unnamed Patient"; // Ensure there's a valid name
+        button.classList.add('patient-button'); // Add styling
+        button.onclick = function() {
+            window.location.href = `patients_details?id=${item.Patient_ID}`; // Redirect with patient ID
+        };
+
+        li.appendChild(button);
+        dataList.appendChild(li);
+    });
+}
+
+// Function to search patients by name
+function searchpatients() {
+    let searchName = document.getElementById('search-name').value.trim().toLowerCase();
+
+    fetch('/api/pr')
+        .then(response => response.json())
+        .then(data => {
+            let filteredData = data.filter(item => item.Name.toLowerCase().includes(searchName));
+            displayPatients(filteredData);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+// Fetch all patients when the page loads
+document.addEventListener("DOMContentLoaded", fetchAllPatients);
+
+</script>
+
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <div class="navbar">
+        <div class="logo-container">
+            <img src="/static/ains.jpg" alt="Logo" class="logo">
+            <h1>AINS Hospital</h1>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="nav-links">
+            <a href="/admin">Home</a>
+            <!-- <a href="add doctor.html">Add Doctor</a> -->
+        </div>
+    </div>
+
+    <!-- Search Doctor Form in Navbar -->
+    <div class="search-container">
+        <label for="search-name">Name:</label>
+        <input type="text" id="search-name" placeholder="Patient Name">
+
+        <button onclick="searchpatients()">Search</button>
+    </div>
+    <div class="displaying"> 
+        <h2 style="text-align: center;">Patients Data</h2>
+    </div> 
+    <ul id="data-list" class="patient-list"></ul>
+
+    
+</body>
+</html>

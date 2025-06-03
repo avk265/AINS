@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctors List</title>
+    <style>
+        /* General styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2C3E50;
+            color: white;
+            padding: 15px 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+
+        .nav-links a:hover {
+            background-color: #34495E;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 10px 15px;
+            border-radius: 25px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-left: auto;
+        }
+        
+        .search-container label {
+            margin-right: 10px;
+            font-size: 16px;
+            color: #34495E;
+        }
+
+        .search-container input, .search-container select {
+            padding: 8px 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-right: 10px;
+        }
+
+        .search-container input:focus, .search-container select:focus {
+            border-color: #2980B9;
+            outline: none;
+        }
+
+        .search-container button {
+            padding: 8px 12px;
+            background-color: #2980B9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #1F618D;
+        }
+
+        .form-container {
+            width: 50%;
+            margin: 30px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #2980B9;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1F618D;
+        }
+
+        .doctor-card {
+        background-color: white;
+        padding: 20px;
+        margin: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        display: inline-block;
+        width: calc(33.33% - 30px);
+        box-sizing: border-box;
+        border-radius: 8px;
+        position: relative;
+        text-align: left;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0; /* Light grey border for a softer look */
+    }
+
+    /* Hover effect for the cards to make them pop out slightly */
+    .doctor-card:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        border-color: #3498db; /* Blue border when hovered */
+        transform: translateY(-5px); /* Slightly lift the card */
+    }
+
+    .doctor-card h3 {
+        margin: 10px 0;
+        font-size: 22px;
+        font-weight: 600;
+        color: #2d3436; /* Dark gray for the doctor's name for a professional look */
+    }
+
+    .doctor-card p {
+        margin: 8px 0;
+        color: #636e72; /* Softer gray for text */
+    }
+
+    .doctor-card p strong {
+        color: #2980b9; /* Blue color for the labels to make them stand out */
+    }
+
+    /* Edit icon for the card */
+    .doctor-card .edit-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        font-size: 24px;
+        color: #3498db; /* Blue color for the edit icon */
+        transition: color 0.3s ease;
+    }
+
+    .doctor-card .edit-icon:hover {
+        color: #2980b9; /* Darker blue on hover */
+    }
+
+    /* Section for doctor information */
+    .doctor-card .doctor-info {
+        margin-top: 10px;
+    }
+
+    .doctor-card .doctor-info p {
+        margin-bottom: 5px;
+    }
+
+    .doctor-card .doctor-info p span {
+        font-weight: bold;
+        color: #3498db; /* Use a blue color for section titles */
+    }
+
+    /* Responsiveness for mobile and tablet */
+    @media (max-width: 768px) {
+        .doctor-card {
+            width: calc(50% - 30px);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .doctor-card {
+            width: 100%;
+        }
+    }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+        }
+
+        .modal-header {
+            font-size: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .modal-content label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        .modal-content select, .modal-content input {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .modal-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .modal-footer button {
+            background-color: #2980B9;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-footer button:hover {
+            background-color: #1F618D;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <div class="navbar">
+        <div class="logo-container">
+            <img src="/static/ains.jpg" alt="Logo" class="logo">
+            <h1>AINS Hospital</h1>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="nav-links">
+            <a href="admin.html">Home</a>
+            <a href="add doctor.html">Add Doctor</a>
+        </div>
+    </div>
+
+    <!-- Search Doctor Form in Navbar -->
+    <div class="search-container">
+        <label for="search-name">Name:</label>
+        <input type="text" id="search-name" placeholder="Doctor Name">
+
+        <label for="search-specialization">Specialization:</label>
+        <select id="search-specialization">
+            <option value="">Select Specialization</option>
+            <option value="Cardiology">Cardiology</option>
+            <option value="Pediatrician">Pediatrics</option>
+            <option value="General Physician">General Physician</option>
+            <option value="Dermatology">Dermatology</option>
+            <option value="Neurology">Neurology</option>
+            <option value="Oncology">Oncology</option>
+            <option value="Orthopedic">Orthopedics</option>
+        </select>
+
+        <button onclick="searchDoctor()">Search</button>
+    </div>
+
+    <!-- Doctor Cards will be inserted dynamically -->
+    <div id="doctor-cards-container">
+        <!-- Doctors will be displayed here -->
+    </div>
+
+    <!-- Edit Doctor Modal -->
+    <div id="editDoctorModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Edit Doctor's Schedule</div>
+
+            <form id="editDoctorForm">
+                <label for="doctor-name">Name:</label>
+                <input type="text" id="doctor-name" readonly>
+
+                <label for="doctor-specialization">Specialization:</label>
+                <input type="text" id="doctor-specialization" readonly>
+
+                <label for="doctor-experience">Experience:</label>
+                <input type="text" id="doctor-experience" readonly>
+
+                <label for="doctor-availability">Availability:</label>
+                <select id="doctor-availability">
+                    <option value="Available">Available</option>
+                    <option value="Unavailable">Unavailable</option>
+                </select>
+
+                <label for="doctor-days">Days:</label>
+                <select id="doctor-days">
+                    <!-- Random combinations of days will be populated here -->
+                </select>
+
+                <label for="doctor-time">Time:</label>
+                <select id="doctor-time">
+                    <!-- Time options in 24-hour format will be populated here -->
+                </select>
+
+                <div class="modal-footer">
+                    <button type="button" onclick="updateDoctor()">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    function searchDoctor() {
+    // Get the search values and convert to lowercase
+    const searchName = document.getElementById("search-name").value.toLowerCase();
+    const searchSpecialization = document.getElementById("search-specialization").value.toLowerCase();
+
+    fetch('/get_all_doctors') // Assuming this is the API to get all doctors
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                // Apply filtering based on name and/or specialization
+                const filteredDoctors = data.filter(doctor => {
+                    // Check if the name matches, only if searchName is not empty
+                    const matchesName = searchName ? doctor.Name.toLowerCase().includes(searchName) : true;
+
+                    // Check if the specialization matches, only if searchSpecialization is not empty
+                    const matchesSpecialization = searchSpecialization ? doctor.Specialization.toLowerCase().includes(searchSpecialization) : true;
+                    
+                    return matchesName && matchesSpecialization;
+                });
+
+                // Update the UI with filtered results
+                displayDoctorCards(filteredDoctors);
+            }
+        })
+        .catch(error => console.error("Error fetching doctors:", error));
+}
+
+    // Simulating random doctor schedules for demo
+    const doctorTimes = ['9:00 - 12:00', '13:00 - 16:00', '17:00 - 20:00'];
+    const doctorDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+    // Generate random days combinations
+    function generateRandomDays() {
+        const dayCombinations = [
+            'Mon Tue Fri', 'Tue Thu Sat', 'Wed Thu Fri', 'Mon Wed Fri', 'Mon Tue Thu', 'Mon Fri Sat'
+        ];
+        return dayCombinations;
+    }
+
+    // Get all doctors when the page loads
+    function getDoctors() {
+        fetch('/get_all_doctors') // assuming this is the API to get all doctors
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    displayDoctorCards(data);
+                }
+            })
+            .catch(error => console.error("Error fetching doctors:", error));
+    }
+
+    // Display doctor cards dynamically
+// Display doctor cards dynamically
+function displayDoctorCards(doctors) {
+    const container = document.getElementById("doctor-cards-container");
+    container.innerHTML = ''; // Clear existing cards
+
+    // Iterate over the filtered doctors array and create cards
+    doctors.forEach(doctor => {
+        const card = document.createElement('div');
+        card.classList.add('doctor-card');
+        card.innerHTML = `
+            <h3>${doctor.Name}</h3>
+            <p><strong>Specialization:</strong> ${doctor.Specialization || 'N/A'}</p>
+            <p><strong>Experience:</strong> ${doctor.Experience || 'N/A'} years</p>
+            <p><strong>Availability:</strong> ${doctor.Availability || 'N/A'}</p>
+            <p><strong>Days:</strong> ${doctor.doc_day || 'N/A'}</p>
+            <p><strong>Time:</strong> ${doctor.doc_time || 'N/A'}</p>
+            <span class="edit-icon" onclick="openEditModal('${doctor.Doctor_ID}', '${doctor.Name}', '${doctor.Specialization}', ${doctor.Experience}, '${doctor.Availability}', '${doctor.doc_day}', '${doctor.doc_time}')">✏️</span>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// Call getDoctors() when the page is loaded
+window.onload = function() {
+    getDoctors();
+};
+
+
+    function openEditModal(doctorId, name, specialization, experience, availability, doc_day, doc_time) {
+    const modal = document.getElementById("editDoctorModal");
+    document.getElementById("doctor-name").value = name;  // Store doctor's name
+    document.getElementById("doctor-specialization").value = specialization;
+    document.getElementById("doctor-experience").value = experience;
+    document.getElementById("doctor-availability").value = availability;
+
+    document.getElementById("doctor-days").innerHTML = generateRandomDays().map(day => `<option value="${day}">${day}</option>`).join('');
+    document.getElementById("doctor-time").innerHTML = doctorTimes.map(time => `<option value="${time}">${time}</option>`).join('');
+
+    // Open the modal
+    modal.style.display = 'flex';
+}
+
+// Update the doctor schedule in the backend
+function updateDoctor() {
+    const doctorName = document.getElementById("doctor-name").value;  // Get the doctor's name
+    const updatedAvailability = document.getElementById("doctor-availability").value;
+    let updatedDays = document.getElementById("doctor-days").value;  // Change 'const' to 'let' to allow reassignment
+    let updatedTime = document.getElementById("doctor-time").value;  // Change 'const' to 'let' to allow reassignment
+
+    // If the doctor is unavailable, set doc_day and doc_time to "N/A"
+    if (updatedAvailability === "Unavailable") {
+        updatedDays = "N/A";
+        updatedTime = "N/A";
+    }
+
+    // Validate fields
+    if (!doctorName || !updatedAvailability || !updatedDays || !updatedTime) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    fetch("/update_doctor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            doctor_name: doctorName,  // Send doctor_name to the backend
+            availability: updatedAvailability,
+            doc_day: updatedDays,
+            doc_time: updatedTime
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Doctor's schedule updated successfully!");
+            document.getElementById("editDoctorModal").style.display = 'none';  // Close modal
+            window.location.reload();  // Refresh the page to see updated data
+        } else {
+            alert("Error updating doctor.");
+        }
+    })
+    .catch(error => console.error("Error updating doctor:", error));
+}
+
+</script>
+
+
+</body>
+</html>

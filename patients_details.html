@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            margin: 0;
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+        .details {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        .detail-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+        .detail-item strong {
+            color: #34495e;
+        }
+        .error {
+            color: #e74c3c;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="details">
+        <h1>Patient Details</h1>
+        {% if patient %}
+            <div class="detail-item"><strong>Patient ID:</strong> {{ patient.Patient_ID }}</div>
+            <div class="detail-item"><strong>Name:</strong> {{ patient.Name }}</div>
+            <div class="detail-item"><strong>Age:</strong> {{ patient.Age }}</div>
+            <div class="detail-item"><strong>Gender:</strong> {{ patient.Gender }}</div>
+            <div class="detail-item"><strong>DOB:</strong> {{ patient.DOB }}</div>
+            
+            <div class="detail-item"><strong>Phone Number:</strong> {{ patient.Phone_No }}</div>
+        {% else %}
+            <div class="error">❌ Patient not found.</div>
+        {% endif %}
+    </div>
+</body>
+</html>

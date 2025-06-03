@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<div class="nav">
+		<a href="#"></a>
+		<a href="#"><img src="{{ url_for('static', filename='callbck.png') }}" height=20px width=30px>&nbsp&nbspRequest a Callback</a>
+		<a class="nav1" href="{{ url_for('appointment') }}">&nbsp&nbsp&nbsp&nbsp&nbsp<img src="{{ url_for('static', filename='cale.png') }}" height=20px width=30px>&nbsp&nbsp Book Appointment</a>
+		<a href="#"><img src="{{ url_for('static', filename='dr.png') }}" height=21px width=30px>&nbsp&nbsp Get Health Checkup</a>
+		<a href="#"></a>
+		<a href="#"></a>
+	</div><br><br>
+	<div class="banner">
+		<h1>We care for your health than anything in this world</h1>
+	</div>
+	<div class="a1">
+		<a href="{{ url_for('appointment') }}" class="b1">Book<img src="{{ url_for('static', filename='calendar.jpg') }}" height=50px width=50px align=right><br> an Appointment</a>
+		<a href="{{ url_for('doctors') }}" class="c1">Doctors - <img src="{{ url_for('static', filename='OIP.jpg') }}" height=50px width=50px align=right><BR>Top experts for your health</a>
+	</div>
+{% endblock %}

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AINS Hospital</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script>
+        // JavaScript to check login state and redirect
+        function checkLogin(doctor, specialization) {
+       const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+
+    if (isLoggedIn) {
+        // Redirect to appointment page with doctor and specialization
+        window.location.href = `appointment.html?doctor=${doctor}&specialization=${specialization}`;
+    } else {
+        // Store the current page URL and redirect to login page
+        sessionStorage.setItem("redirectUrl", "appointment.html");
+        alert("Please log in to book an appointment.");
+        window.location.href = "registration.html";
+    }
+}
+
+
+        function logout() {
+            // Clear login state
+            sessionStorage.removeItem("isLoggedIn");
+            alert("You have been logged out.");
+            window.location.reload();
+        }
+window.onload = function() {
+            const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+
+            if (isLoggedIn) {
+                document.getElementById("logout-btn").style.display = "block"; // Show logout button
+            } else {
+                document.getElementById("logout-btn").style.display = "none"; // Hide logout button
+            }
+        }
+    	</script>
+	<style>
+		body {
+			height:inherit;
+			width:inherit;
+			margin: 0;
+			font-family: Arial, Helvetica, sans-serif;
+			background-image: url('{{ url_for('static', filename='hospital-website-background-7.jpg') }}');
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			background-size: cover;
+		}
+		.top-bar {
+			font-size:20px;
+			font-weight:bold;
+			font-family:typewritter;
+			padding: 10px;
+			margin-left:30px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		.top-bar a {
+			color: black;
+			text-decoration: none;
+			margin-right: 10px;
+		}
+		.top-bar a:hover {
+			color: #1abc9c;
+		}
+		.af{
+			margin-left:70px;
+			font-size:50px;
+			font-weight:bold;
+			font-family:bold Times-New-Roman;
+		}
+		.nav-bar {
+			
+			display: flex;
+			margin-left:60px;
+			margin-right:380px;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px;
+		}
+		.nav-bar a {
+			color: black;
+			font-weight:bold;
+			font-size:23px;
+			font-family:Times-New-Roman;
+			text-decoration: none;
+			margin-right: 10px;
+		}
+		.nav-bar a:hover {
+			color: #1abc9c;
+		}
+		.nav {
+			margin-left:70px;
+			background-color: ivory;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 5px;
+		}
+		.nav a {
+			margin-left:0px;
+			color: grey;
+			font-weight:bold;
+			font-size:20px;
+			font-family:'Brush Script MT',sans-serif;
+			text-decoration: none;
+		}
+		.nav a:hover {
+			color: #1abc9c;
+		}
+		.logout-btn {
+           		 display: none; /* Initially hidden */
+            		padding: 10px;
+           		 background-color: #dc3545;
+          		  color: white;
+           		 border: none;
+           		 border-radius: 5px;
+           		 cursor: pointer;
+      		  }
+
+       		.logout-btn:hover {
+            		background-color: #c82333;
+        	}
+		.nav1 {
+			border-radius:25px;
+			background-color:#ffe4e1;
+			padding: 10px;
+			height: 25px;
+			width:auto;
+		}
+		.a4 {
+			background-color:white;
+			display: flex;
+			flex-direction:row;
+			justify-content: center;
+			align-items: center;
+		}
+		.b{
+			font-size:35px;
+			font-style:normal;
+			font-family:Times-New-Roman;
+			font-weight:bold;
+			color:red;
+			padding:20px;
+		}
+		.a1 {
+			display: grid;
+   			 grid-template-columns: repeat(3,1fr);
+    			gap: 20px;
+			background-color:white;
+    			padding: 20px;
+			align-items:center;
+			
+		}
+		.b1 {	background-color:white;
+			border:1px solid black;
+			border-radius: 15px;
+			padding: 15px;
+ 			margin-left: 75px;
+			margin-right:75px;
+			height:450px;
+			width:230px;
+			color: black;
+			text-align:center;
+			text-decoration:none;
+			font-size: 15px;	
+			font-style:oblique;
+			font-weight:bold;
+			font-family:Times-New-Roman;
+		}
+		.c1 {	background-color:pink;
+			border-radius:25px;
+			padding: 5px;
+			height:40px;
+			width:220px;
+			color: black;
+			text-decoration:none;
+			font-size: 20px;	
+			font-style:oblique;
+			font-weight:bold;
+			font-family:Times-New-Roman;
+		}
+		.g{
+			background-color:black;
+			display: flex;
+			height:700px;
+			flex-direction: row;
+			align-items: left;
+			margin-top: 60px;
+			
+		}
+		.text{
+			margin-top: 60px;
+			margin-left: 60px;
+			font-size: 20px;
+			color:white;	
+			font-style:normal;
+			font-family:Times-New-Roman;
+		}
+		.text a{
+			font-size: 15px;
+			color:white;	
+			text-decoration:none;
+			font-style:normal;
+			font-family:sans-serif;
+		}
+	</style>
+</head>
+<body>
+	<div class="top-bar">
+		<div>
+			<a href="mailto:ainshosp@gmail.com">ainshosp@gmail.com</a>&nbsp&nbsp&nbsp&nbsp&nbsp
+			<a href="tel:+918989898989"><img src="{{ url_for('static', filename='ph.jpg') }}" height=15px width=15px>+918989898989</a>
+		</div>
+		<div>
+			Follow us on
+			<a href="www.facebook.com"><img src="{{ url_for('static', filename='fb.png') }}" height=25px width=25px></a>
+			<a href="www.twitter.com"><img src="{{ url_for('static', filename='twitter.png') }}" height=25px width=25px></a>
+			<div>
+            <!-- Logout button -->
+            <button id="logout-btn" class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+		</div>
+	</div>
+	<div class="af" ><h style:'bold',34;><font color=darkbrown>A</font color><font color=darkgreen>I</font color><font color=red>N</font color><font color=orange>S</font color> Hospital</h></div>
+	<div class="nav-bar">
+		<a href="ad1.html">HOME</a>
+		<a href="about.html">ABOUT US</a>
+		<a href="doctors.html">DOCTORS</a>
+		<a href="appointment.html">APPOINTMENTS</a>
+		<a href="contact us.html">CONTACT US</a>
+		<a href="#"></a>
+		<a href="#"></a>
+	</div>
+	<div class="nav">
+		<a href="#"></a>
+		<a href="callbck.html"><img src="{{ url_for('static', filename='callbck.png') }}" height=20px width=30px>&nbsp&nbspRequest a Callback</a>
+		<a class="nav1" href="appointment.html">&nbsp&nbsp&nbsp&nbsp&nbsp<img src="{{ url_for('static', filename='cale.png') }}" height=20px width=30px>&nbsp&nbsp Book Appointment</a>
+		<a href="heal.html"><img src="{{ url_for('static', filename='dr.png') }}" height=21px width=30px>&nbsp&nbsp Get Health Checkup</a>
+		<a href="#"></a>
+		<a href="#"></a>
+	</div><br><br><br>
+	<div class="a4"><h class="b">DOCTORS</h></div>
+	<div class="a1">
+        {% for doctor in doctors if doctor[5] != 'Unavailable' %}
+
+       	 	<div class="b1">
+            	<img src="{{ url_for('static', filename='d.jpg') }}" height=250px width=210px align=center alt="Doctor Image">
+           	 <h3>{{ doctor[1] }}</h3>
+            	<p><strong>Specialization:</strong> {{ doctor[4] }}</p>
+           	 <p><strong>Experience:</strong> {{ doctor[3] }} years</p>
+           	 <p><strong>Availability:</strong> {{ doctor[5] }}</p>
+           	 <button class="c1" onclick="checkLogin('{{ doctor[1] }}', '{{ doctor[4] }}')">Book Appointment</button>
+       	 	</div>
+        {% endfor %}
+    	</div>
+	<div class="g">
+		<div class="text"><h>Departments</h>
+		<br><br>
+		<a href="#">Neurology</a><br>
+		<a href="#">Cardiology</a><br>
+		<a href="#">Nematology</a><br>
+		<a href="#">Dermatology</a><br>
+		<a href="#">Urology</a><br>
+		<a href="#">Orthopaedics</a>
+		<br><br><br><br>
+		<h>Important Links</h><br><br>
+		<a href="about.html">About Us</a><br>
+		<a href="doctors.html">Doctors</a><br>
+		<a href="appointment.html">Appointments</a><br>
+		<a href="contact us.html">Contact Us</a><br><br><br>
+		<div>
+			<h>AINS Hospital</h><br><br>
+			<a href="#"><img src="{{ url_for('static', filename='locn.jpg') }}" height=15px width=15px>&nbsp&nbspKazhakootam<br>&nbsp&nbsp&nbsp&nbsp Trivandrum</a><br>
+			<a href="mailto:ainshosp@gmail.com"><img src="{{ url_for('static', filename='mail.jpg') }}" height=15px width=15px>&nbsp&nbsp ainshosp@gmail.com</a><br>
+			<a href="tel:+918989898989"><img src="{{ url_for('static', filename='ph.jpg') }}" height=15px width=15px>&nbsp&nbsp +918989898989</a><br>
+			<a href="www.twitter.com"><img src="{{ url_for('static', filename='twitter.png') }}" height=25px width=25px></a>
+			<a href="www.facebook.com"><img src="{{ url_for('static', filename='fb.png') }}" height=25px width=25px></a>
+		</div>
+		</div>
+		
+	</div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Doctor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+        }
+
+        /* Top Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2C3E50;
+            color: white;
+            padding: 15px 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #34495E;
+        }
+
+        .nav-links a:hover {
+            background-color: #1F618D;
+        }
+
+        /* Form Container */
+        .form-container {
+            width: 40%;
+            margin: 30px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #2980B9;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1F618D;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <div class="navbar">
+        <div class="logo-container">
+            <img src="C:\Users\Kiran\Desktop\AD LAB PROJECT (1)\static\ains.jpg" alt="Logo" class="logo">
+            <h1>AINS Hospital</h1>
+        </div>
+        <div class="nav-links">
+            <a href="admin.html">Home</a>
+        </div>
+    </div>
+
+    <!-- Add Doctor Form -->
+    <div class="form-container">
+        <h2>Add Doctor</h2>
+        <form id="add-doctor-form">
+            <label for="name">Doctor Name:</label>
+            <input type="text" id="name" required>
+
+            <label for="specialty">Specialization:</label>
+            <select id="specialty" required>
+                <option value="">Select Specialization</option>
+                <option value="Cardiology">Cardiology</option>
+                <option value="Pediatrics">Pediatrics</option>
+                <option value="General Physician">General Physician</option>
+                <option value="Dermatology">Dermatology</option>
+                <option value="Neurology">Neurology</option>
+                <option value="Oncology">Oncology</option>
+                <option value="Orthopaedics">Orthopaedics</option>
+            </select>
+
+            <label for="experience">Experience (Years):</label>
+            <input type="number" id="experience" required>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="availability">Availability Days:</label>
+            <select id="availability" required>
+    <option value="">Select Availability</option>
+    <!-- 2-Day Schedules -->
+    <option value="Mon Tue">Mon Tue</option>
+    <option value="Tue Wed">Tue Wed</option>
+    <option value="Wed Thu">Wed Thu</option>
+    <option value="Thu Fri">Thu Fri</option>
+    <option value="Fri Sat">Fri Sat</option>
+    <option value="Sat Sun">Sat Sun</option>
+    <option value="Sun Mon">Sun Mon</option>
+
+    <!-- 3-Day Schedules -->
+    <option value="Mon Wed Fri">Mon Wed Fri</option>
+    <option value="Tue Thu Sat">Tue Thu Sat</option>
+    <option value="Mon Tue Thu">Mon Tue Thu</option>
+    <option value="Wed Fri Sun">Wed Fri Sun</option>
+    <option value="Tue Thu Sun">Tue Thu Sun</option>
+    <option value="Mon Wed Sat">Mon Wed Sat</option>
+    <option value="Thu Fri Sun">Thu Fri Sun</option>
+</select>
+
+
+            <label for="doc_time">Doctor Time:</label>
+            <select id="doc_time" required>
+                <option value="">Select Time Slot</option>
+                <option value="9:30 AM - 12:00 PM">9:30 AM - 12:00 PM</option>
+                <option value="10:00 AM - 1:00 PM">10:00 AM - 1:00 PM</option>
+                <option value="2:00 PM - 5:00 PM">2:00 PM - 5:00 PM</option>
+                <option value="3:30 PM - 6:00 PM">3:30 PM - 6:00 PM</option>
+                <option value="6:00 PM - 9:00 PM">6:00 PM - 9:00 PM</option>
+                <option value="8:00 AM - 11:00 AM">8:00 AM - 11:00 AM</option>
+                <option value="1:00 PM - 4:00 PM">1:00 PM - 4:00 PM</option>
+                <option value="4:00 PM - 7:00 PM">4:00 PM - 7:00 PM</option>
+            </select>
+
+            <button type="submit">Save Doctor</button>
+        </form>
+
+        <p id="response-message"></p>
+    </div>
+
+    <script>
+       document.getElementById('add-doctor-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let name = document.getElementById('name').value;
+            let specialty = document.getElementById('specialty').value;
+            let experience = document.getElementById('experience').value;
+            let gender = document.getElementById('gender').value;
+            let availability = document.getElementById('availability').value;
+            let doc_time = document.getElementById('doc_time').value;
+
+            fetch("/add_doctor", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: name,
+                    specialization: specialty,
+                    experience: experience,
+                    gender: gender,
+                    hospital_id: 1,
+                    availability: availability,
+                    doc_time: doc_time
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const message = document.getElementById("response-message");
+                message.textContent = data.message;
+                message.style.color = data.success ? "green" : "red";
+            })
+            .catch(error => console.error("Fetch error:", error));
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User & Book Appointment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 410px;
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+        }
+        input, select, button {
+            width: 390px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background: #4facfe;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #00c6fb;
+        }
+    </style>
+    <script>
+        function calculateAge() {
+            let dob = document.getElementById("dob").value;
+            if (dob) {
+                let dobDate = new Date(dob);
+                let today = new Date();
+                let age = today.getFullYear() - dobDate.getFullYear();
+                let monthDiff = today.getMonth() - dobDate.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+                    age--;
+                }
+                document.getElementById("age").value = age;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2><i class="fa fa-user-plus"></i> Add New Patient</h2>
+        <form action="{{ url_for('add_user', mode=request.args.get('mode', '') ) }}" method="POST">
+
+            <input type="text" name="name" placeholder="Full Name" required>
+            <select name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+            <input type="date" name="dob" id="dob" onchange="calculateAge()" required>
+            <input type="number" name="age" id="age" placeholder="Age (Auto-Calculated)" readonly required>
+            <input type="text" name="phone" placeholder="Phone Number" required>
+            <button type="submit"><i class="fa fa-plus"></i> Add Patient</button>
+        </form>
+        <hr>
+        
+    </div>
+</body>
+</html>

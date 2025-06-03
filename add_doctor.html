@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Doctor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f6fc;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      background-color: #c1d3e0; /* greyish blue */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      width: 50px;
+      height: 50px;
+      background-color: #a3bcd1; /* placeholder color */
+      border-radius: 8px;
+      margin-right: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: white;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .home-link {
+      background-color: #4a90e2;
+      color: white;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .home-link:hover {
+      background-color: #357abd;
+    }
+
+    .form-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 0;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #4a90e2;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #4a90e2;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #357abd;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-left">
+      <div><img src="/static/ains.jpg" alt="Logo" class="logo"></div>
+      <div class="title">Add Doctor</div>
+    </div>
+    <a href="/edit_doctor" class="home-link">Home</a>
+  </div>
+<!-- Add this block above the form or wherever you want to show the message -->
+{% if message %}
+  <div style="color: red; text-align: center; margin-bottom: 20px;">
+    <strong>{{ message }}</strong>
+  </div>
+{% endif %}
+
+  <div class="form-container">
+    <form action="/add_doctor" method="POST">
+      <label for="name">Doctor's Name:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="specialization">Specialization:</label>
+      <select name="specialization" id="specialization" required>
+        <option value="Cardiology">Cardiology</option>
+        <option value="Pediatrics">Pediatrics</option>
+        <option value="General Physician">General Physician</option>
+        <option value="Dermatology">Dermatology</option>
+        <option value="Neurology">Neurology</option>
+        <option value="Oncology">Oncology</option>
+        <option value="Orthopedics">Orthopedics</option>
+      </select>
+
+      <label for="experience">Experience (years):</label>
+      <input type="number" id="experience" name="experience" required>
+
+      <label for="gender">Gender:</label>
+      <select name="gender" id="gender" required>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="availability">Availability:</label>
+      <select name="availability" id="availability" required>
+        <option value="Available">Available</option>
+        <option value="Unavailable">Unavailable</option>
+      </select>
+
+      <label for="doc_time">Time:</label>
+      <select name="doc_time" id="doc_time" required>
+        <option value="9-12">9:00 AM - 12:00 PM</option>
+        <option value="13-16">1:00 PM - 4:00 PM</option>
+        <option value="17-20">5:00 PM - 8:00 PM</option>
+      </select>
+
+      <label for="doc_day">Days:</label>
+      <select name="doc_day" id="doc_day" required>
+        <option value="Mon Tue Fri">Mon Tue Fri</option>
+        <option value="Tue Thu Sat">Tue Thu Sat</option>
+        <option value="Wed Thu Fri">Wed Thu Fri</option>
+        <option value="Mon Wed Fri">Mon Wed Fri</option>
+        <option value="Mon Tue Thu">Mon Tue Thu</option>
+        <option value="Mon Fri Sat">Mon Fri Sat</option>
+      </select>
+
+      <label for="hospital_id">Hospital ID:</label>
+      <input type="number" id="hospital_id" name="hospital_id" required>
+
+      <button type="submit">Add Doctor</button>
+    </form>
+  </div>
+
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: #ffffff;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .appointment-card {
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+            text-align: left;
+        }
+        .appointment-card p {
+            margin: 5px 0;
+        }
+        .no-appointments {
+            font-size: 1.2em;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <h1>Appointment History</h1>
+    <div class="container">
+        {% if appointments %}
+            {% for appointment in appointments %}
+            <div class="appointment-card">
+                <p><strong>Date:</strong> {{ appointment.date }}</p>
+                <p><strong>Time:</strong> {{ appointment.time }}</p>
+                <p><strong>Doctor:</strong> Dr. {{ appointment.doctor_name }}</p>
+                <p><strong>Specialty:</strong> {{ appointment.specialty }}</p>
+                <p><strong>Status:</strong> {{ appointment.status }}</p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-appointments">No past appointments found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

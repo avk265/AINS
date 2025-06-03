@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AINS Hospital</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script>
+    // Function to fetch the best doctor based on user filters
+function filterDoctors() {
+    let specialization = document.getElementById('specializationFilter').value;
+    let hospital = document.getElementById('hospitalFilter').value;
+    let experience = document.getElementById('experienceFilter').value;
+
+    // Construct the URL with the selected filters
+    let url = `/filter_doctors?specialization=${specialization}&hospital=${hospital}&experience=${experience}`;
+
+    // Fetch filtered doctors from Flask backend
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            let container = document.getElementById('doctorsContainer');
+            container.innerHTML = ""; // Clear previous results
+
+            if (data.error) {
+                container.innerHTML = `<p>${data.error}</p>`;
+                return;
+            }
+
+            // Check if data contains doctor information
+            if (data.length > 0) {
+                data.forEach(doctor => {
+                    let doctorInfo = `
+                        <div class="b1">
+                            <img src="/static/d.jpg" height="150px" width="160px" alt="Doctor Image">
+                            <h3>${doctor.name}</h3>
+                            <p><strong>Specialization:</strong> ${doctor.specialization}</p>
+                            <p><strong>Experience:</strong> ${doctor.experience} years</p>
+                            <p><strong>Hospital ID:</strong> ${doctor.hospital_id}</p>
+                            <p><strong>Days:</strong> ${doctor.doc_day}</p>
+                            <p><strong>Time:</strong> ${doctor.doc_time}</p>
+                            <button class="c1" onclick="checkLogin('${doctor.doctor_id}', '${doctor.name}', '${doctor.specialization}')">
+                                Book Appointment
+                            </button>
+                        </div>
+                    `;
+                    container.innerHTML += doctorInfo; // Display filtered doctor
+                });
+            } else {
+                container.innerHTML = "<p>No doctors found based on your filters.</p>";
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('doctorsContainer').innerHTML = "<p>Failed to fetch doctor data. Please try again later.</p>";
+        });
+}
+
+    function fetchTopDoctor() {
+        let specialization = document.getElementById('specializationFilter').value;
+        let experience = document.getElementById('experienceFilter').value;
+        let hospital = document.getElementById('hospitalFilter').value;
+
+        // Validate if specialization is selected
+        if (!specialization) {
+            alert("Please select a specialization!");
+            return;
+        }
+
+        let url = `/get_top_doctor?specialization=${specialization}&experience=${experience}&hospital=${hospital}`;
+
+        // Fetch data from Flask backend
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                let container = document.getElementById('doctorsContainer');
+                container.innerHTML = ""; // Clear previous results
+
+                if (data.error) {
+                    container.innerHTML = `<p>${data.error}</p>`;
+                    return;
+                }
+
+                // Check if data contains doctor information
+                if (data.name) {
+                    let doctorInfo = `
+                        <div class="b1">
+                            <img src="/static/d.jpg" height="150px" width="160px" alt="Doctor Image">
+                            <h3>${data.name}</h3>
+                            <p><strong>Specialization:</strong> ${data.specialization}</p>
+                            <p><strong>Experience:</strong> ${data.experience} years</p>
+                            <p><strong>Days:</strong> ${data.doc_day}</p>
+                            <p><strong>Time:</strong> ${data.doc_time}</p>
+                            
+                            <button class="c1" onclick="checkLogin('${data.doctor_id}', '${data.name}', '${data.specialization}')">
+                                Book Appointment
+                            </button>
+                        </div>
+                    `;
+                    container.innerHTML = doctorInfo; // Display the best doctor
+                } else {
+                    container.innerHTML = "<p>No doctors found based on your filters.</p>";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('doctorsContainer').innerHTML = "<p>Failed to fetch doctor data. Please try again later.</p>";
+            });
+    }
+
+    // Function to check if the user is logged in before booking an appointment
+    function checkLogin(doctor_id, doctor_name, specialization) {
+        let userId = "{{ session.get('user_id', '') }}";  // Get user_id from Flask session
+        let isLoggedIn = userId !== "";  // Check login status
+
+        if (isLoggedIn) {
+            window.location.href = `/appointment?doctor_id=${encodeURIComponent(doctor_id)}&doctor=${encodeURIComponent(doctor_name)}&specialization=${encodeURIComponent(specialization)}&user_id=${encodeURIComponent(userId)}`;
+        } else {
+            alert("Please log in to book an appointment.");
+            window.location.href = "{{ url_for('login') }}";  // Redirect to login page
+        }
+    }
+
+    // Ensure logout button visibility based on login status
+    window.onload = function() {
+        const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+
+        if (isLoggedIn) {
+            document.getElementById("logout-btn").style.display = "block"; // Show logout button
+        } else {
+            document.getElementById("logout-btn").style.display = "none"; // Hide logout button
+        }
+    };
+</script>
+
+
+	<style>
+		body {
+			height:inherit;
+			width:inherit;
+			margin: 0;
+			font-family: Arial, Helvetica, sans-serif;
+			background-color: #d0eaf2;
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			background-size: cover;
+		}
+		.top-bar {
+			font-size:20px;
+			font-weight:bold;
+			font-family:typewritter;
+			padding: 10px;
+			margin-left:30px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		.top-bar a {
+			color: black;
+			text-decoration: none;
+			margin-right: 10px;
+		}
+		.top-bar a:hover {
+			color: #1abc9c;
+		}
+		.af{
+			margin-left:70px;
+			font-size:50px;
+			font-weight:bold;
+			font-family:bold Times-New-Roman;
+		}
+		.nav-bar {
+			
+			display: flex;
+			margin-left:60px;
+			margin-right:380px;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px;
+		}
+		.nav-bar a {
+			color: black;
+			font-weight:bold;
+			font-size:23px;
+			font-family:Times-New-Roman;
+			text-decoration: none;
+			margin-right: 10px;
+		}
+		.nav-bar a:hover {
+			color: #1abc9c;
+		}
+		.nav {
+			margin-left:70px;
+			background-color: ivory;
+			display: flex;
+			width: 1200px;
+			justify-content: space-between;
+			align-items: center;
+			padding: 5px;
+		}
+		.nav a {
+			margin-left:0px;
+			color: grey;
+			font-weight:bold;
+			font-size:20px;
+			font-family:'Brush Script MT',sans-serif;
+			text-decoration: none;
+		}
+		.nav a:hover {
+			color: #1abc9c;
+		}
+.floating-log-btn {
+    position: fixed;
+    bottom: 20px; 
+    right: 20px; 
+    background-color: #007bff;
+    color: white; 
+    padding: 15px 30px; 
+    border-radius: 50px;  
+    font-size: 16;
+}
+
+		.nav1 {
+			border-radius:25px;
+			background-color:#ffe4e1;
+			padding: 10px;
+			height: 25px;
+			width:auto;
+		}
+		.a4 {
+			background-color:none;
+			display: flex;
+			flex-direction:row;
+			justify-content: center;
+			align-items: center;
+		}
+		.b{
+			font-size:35px;
+			border:none;
+			border-radius: 15px;
+			background-color:white;
+			width:170px;
+			font-style:normal;
+			font-family:Times-New-Roman;
+			font-weight:bold;
+			color:red;
+			padding:20px;
+		}
+		.search-container {
+    text-align: center;
+    border: none;
+    border-radius: 15px;
+    margin: 20px auto;
+    width:900px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-container input, 
+.search-container select, 
+.search-container button {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.search-container input:focus, 
+.search-container select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+}
+
+.search-container button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.search-container button:hover {
+    background-color: #0056b3;
+}
+
+#hospitalCountDisplay {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 15px;
+    color: #333;
+}
+
+		.a1 {
+			display: grid;
+   			 grid-template-columns: repeat(4,1fr);
+    			gap: 20px;
+			background-color:none;
+    			padding: 20px;
+			align-items:center;
+			
+		}
+		.b1 {	background-color:white;
+			border:1px solid black;
+			border-radius: 15px;
+			padding: 15px;
+ 			margin-left: 75px;
+	
+			height:410px;
+			width:230px;
+			color: black;
+			text-align:center;
+			text-decoration:none;
+			font-size: 15px;	
+			font-style:oblique;
+			font-weight:bold;
+			font-family:Times-New-Roman;
+		}
+		.c1 {	background-color:pink;
+			border-radius:25px;
+			padding: 5px;
+			height:40px;
+			width:220px;
+			color: black;
+			text-decoration:none;
+			font-size: 20px;	
+			font-style:oblique;
+			font-weight:bold;
+			font-family:Times-New-Roman;
+		}
+		.g{
+			background-color:black;
+			display: flex;
+			height:700px;
+			flex-direction: row;
+			align-items: left;
+			margin-top: 60px;
+			
+		}
+		.text{
+			margin-top: 60px;
+			margin-left: 60px;
+			font-size: 20px;
+			color:white;	
+			font-style:normal;
+			font-family:Times-New-Roman;
+		}
+		.text a{
+			font-size: 15px;
+			color:white;	
+			text-decoration:none;
+			font-style:normal;
+			font-family:sans-serif;
+		}
+	</style>
+</head>
+<body>
+	<div class="top-bar">
+		<div>
+			<a href="mailto:ainshosp@gmail.com">ainshosp@gmail.com</a>&nbsp&nbsp&nbsp&nbsp&nbsp
+			<a href="tel:+918989898989"><img src="{{ url_for('static', filename='ph.jpg') }}" height=15px width=15px>+918989898989</a>
+		</div>
+		<div>
+			Follow us on
+			<a href="www.facebook.com"><img src="{{ url_for('static', filename='fb.png') }}" height=25px width=25px></a>
+			<a href="www.twitter.com"><img src="{{ url_for('static', filename='twitter.png') }}" height=25px width=25px></a>
+			<div>
+            
+        </div>
+		</div>
+	</div>
+	<div class="af" ><h style:'bold',34;><font color=brown>A</font color><font color=green>I</font color><font color=red>N</font color><font color=orange>S</font color> Hospital</h></div>
+	<div class="nav-bar">
+	
+    <a href="{{ url_for('home') }}">HOME</a>
+    <a href="{{ url_for('about') }}">ABOUT US</a>
+    <a href="{{ url_for('doctors') }}">DOCTORS</a>
+    <a href="{{ url_for('appointment') }}">APPOINTMENTS</a>
+    <a href="{{ url_for('contact') }}">CONTACT US</a>
+
+    {% if session.get('user_id') %}
+        <!-- Show logout button when user is logged in -->
+        <a href="{{ url_for('logout') }}" class="floating-log-btn">Logout</a>
+        {% endif %}
+
+
+	</div>
+	<div class="nav">
+		<a href="#"></a>
+		<a href="callbck.html"><img src="{{ url_for('static', filename='callbck.png') }}" height=20px width=30px>&nbsp&nbspRequest a Callback</a>
+		<a class="nav1" href="{{ url_for('appointment') }}">&nbsp&nbsp&nbsp&nbsp&nbsp<img src="{{ url_for('static', filename='cale.png') }}" height=20px width=30px>&nbsp&nbsp Book Appointment</a>
+		<a href="heal.html"><img src="{{ url_for('static', filename='dr.png') }}" height=21px width=30px>&nbsp&nbsp Get Health Checkup</a>
+		<a href="#"></a>
+		<a href="#"></a>
+	</div><br><br><br>
+	<div class="a4"><h class="b">DOCTORS</h></div>
+	<div class="search-container">
+    <input type="number" id="experienceFilter" placeholder="Min Experience (years)" min="0" oninput="this.value = Math.max(0, this.value)" />
+
+    <select id="specializationFilter">
+        <option value="">Select Specialization</option>
+        <option value="Neurology">Neurology</option>
+        <option value="Pediatrician">Pediatrician</option>
+        <option value="Cardiology">Cardiology</option>
+        <option value="Dermatology">Dermatology</option>
+        <option value="Oncology">Oncology</option>
+        <option value="Orthopedics">Orthopedics</option>
+        <option value="Ophthalmology">Ophthalmology</option>
+    </select>
+
+    <select id="hospitalFilter">
+        <option value="All">All Hospitals</option>
+        {% for hospital in hospitals %}
+            <option value="{{ hospital[0] }}">{{ hospital[1] }}</option>
+        {% endfor %}
+    </select>
+
+    <button onclick="filterDoctors()">Search</button>
+    <button onclick="fetchTopDoctor()">Find Best Doctor</button>
+</div>
+
+<!-- Doctors List (Includes Top Doctor & Search Results) -->
+<div class="a1" id="doctorsContainer">
+    {% for doctor in doctors %}
+        <div class="b1">
+            <img src="{{ url_for('static', filename='d.jpg') }}" height="150px" width="160px" align="center" alt="Doctor Image">
+            <h3>{{ doctor[1] }}</h3>
+            <p><strong>Specialization:</strong> {{ doctor[2] }}</p>
+            <p><strong>Experience:</strong> {{ doctor[3] }} years</p>
+            <p><strong>Hospital ID:</strong> {{ doctor[4] }}</p>
+	    <p><strong>Days:</strong> {{ doctor[5] }}</p>
+            <p><strong>Time:</strong> {{ doctor[6] }}</p>
+            <button class="c1" onclick="checkLogin('{{ doctor[0] }}', '{{ doctor[1] }}', '{{ doctor[2] }}')">
+                Book Appointment
+            </button>
+        </div>
+    {% endfor %}
+</div>
+
+	<div class="g">
+		<div class="text"><h>Departments</h>
+		<br><br>
+		<a href="#">Neurology</a><br>
+		<a href="#">Pediatrician</a><br>
+		<a href="#">Cardiology</a><br>
+		<a href="#">Dermatology</a><br>
+		<a href="#">Oncology</a><br>
+		<a href="#">Orthopedics</a><br>
+		<a href="#">Opthamology</a>
+		<br><br><br>
+		<h>Important Links</h><br><br>
+		<a href="{{ url_for('home') }}">Home</a><br>
+		<a href="{{ url_for('about') }}">About us</a><br>
+		<a href="{{ url_for('doctors') }}">Doctors</a><br>
+		<a href="{{ url_for('appointment') }}">Appointments</a><br>
+		<a href="{{ url_for('contact') }}">Contact us</a><br><br><br>
+		<div>
+			<h>AINS Hospital</h><br><br>
+			<a href="#"><img src="{{ url_for('static', filename='locn.png') }}" height=15px width=15px>&nbsp&nbspKazhakootam<br>&nbsp&nbsp&nbsp&nbsp Trivandrum</a><br>
+			<a href="mailto:ainshosp@gmail.com"><img src="{{ url_for('static', filename='mail.jpg') }}" height=15px width=15px>&nbsp&nbsp ainshosp@gmail.com</a><br>
+			<a href="tel:+918989898989"><img src="{{ url_for('static', filename='ph.jpg') }}" height=15px width=15px>&nbsp&nbsp +918989898989</a><br>
+			<a href="www.twitter.com"><img src="{{ url_for('static', filename='twitter.png') }}" height=25px width=25px></a>
+			<a href="www.facebook.com"><img src="{{ url_for('static', filename='fb.png') }}" height=25px width=25px></a>
+		</div>
+		</div>
+		
+	</div>
+</body>
+</html>
