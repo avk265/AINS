@@ -1,5 +1,6 @@
 AINS HOSPITAL WEBSITE MANAGEMENT SYSTEM
 - ABSTRACT
+  
 The AINS Hospital Website Management System is a web-based application developed to
 simplify and modernize the hospital appointment and consultation process. The objective of the
 project is to create an efficient platform for patients to book appointments, manage consultation
@@ -19,7 +20,8 @@ currently built for a single hospital with one admin, but it is designed to be s
 multi-admin and multi-hospital extensions, contributing to a more efficient and transparent
 healthcare delivery process.
 
--OBJECTIVES
+- OBJECTIVES
+
 Key objectives include:
 1. Patient Account Management: Allow users to register and manage multiple patient
 profiles under a single account, simplifying family healthcare tracking.
@@ -35,7 +37,8 @@ consulted, and update real-time data.
 6. Admin Control: Provide a robust admin panel for managing doctor profiles, editing
 details, and reviewing appointment history based on date or patient.
 
--OPERATING ENVIRONMENT
+- OPERATING ENVIRONMENT
+  
 1. Software Requirements:
 a. Operating System: Windows 10 or later, Linux (Ubuntu preferred), or macOS
 b. Frontend Technologies: HTML5, CSS3, JavaScript
