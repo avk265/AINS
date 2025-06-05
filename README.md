@@ -53,3 +53,6 @@ h. Others: Git for version control, Postman for API testing (optional)
 a. Processor: Intel Core i3 or above (or AMD equivalent)
 b. RAM: Minimum 4 GB (Recommended: 8 GB for better performance)
 c. Storage: 512 MB of free space for software installation and database
+
+
+NOTE : all the programs are saved inside 'template' folder and all images,icons to be saved inside 'static' folder.
