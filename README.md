@@ -1,5 +1,4 @@
 AINS HOSPITAL WEBSITE MANAGEMENT SYSTEM
-
 - ABSTRACT
 The AINS Hospital Website Management System is a web-based application developed to
 simplify and modernize the hospital appointment and consultation process. The objective of the
